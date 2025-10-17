@@ -25,7 +25,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DSRemapper.Core" Version="0.4.1-beta" />
+    <PackageReference Include="DSRemapper.Core" Version="0.4.2-beta" />
     <PackageReference Include="DSRemapper.Framework" Version="0.2.2-beta" />
   </ItemGroup>
 
@@ -37,7 +37,8 @@
   </ItemGroup>
 
 	<Target Name="PostBuild" AfterTargets="Pack">
-		<Exec Command="copy $(OutputPath)$(TargetName).$(Version).nupkg ..\nugets\* /Y" />
+		<Exec Command="copy $(OutputPath)$(TargetName).$(Version).nupkg ..\nugets\* /Y" Condition="$([MSBuild]::IsOSPlatform('Windows'))" />
+		<Exec Command="cp &quot;$(OutputPath)$(TargetName).$(Version).nupkg&quot; &quot;../nugets/&quot; -f" Condition="$([MSBuild]::IsOSPlatform('Linux'))" />
 	</Target>
 
 </Project>
